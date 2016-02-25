@@ -2,10 +2,11 @@ function initCamera() {
   //Uncomment and fill in the correct selectors below.
   capture($('#camera video'),
           $('#camera canvas'),
-          $('#camera button'));
+          $('#camera button'),
+          $('#photo'));
 }
 
-function capture(video, canvas, snapshotButton) {
+function capture(video, canvas, snapshotButton, photoHolder) {
   //Adopted from https://dev.opera.com/articles/media-capture-in-mobile-browsers/
   //Setup navigator for all versions of browsers.
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -24,6 +25,12 @@ function capture(video, canvas, snapshotButton) {
         canvas.attr('width', width);
         canvas.attr('height', height);
         ctx.drawImage(video[0], 0, 0, width, height);
+
+        //export the picture on the canvas to a base 64 url
+        var jpegUrl = canvas.get(0).toDataURL("image/jpeg");
+
+        //add the url to the img on the holder
+        photoHolder.attr("src", jpegUrl);
     });
   };
 
